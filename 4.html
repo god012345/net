@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VS Code Overlay</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Consolas, monospace;
+}
+
+/* ✅ Background Image */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url("vscode.png") no-repeat center center/cover;
+    z-index: -1;
+}
+
+/* Floating Panel */
+.panel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: rgba(45, 45, 45, 0.95);
+    padding: 12px;
+    border-radius: 10px;
+    width: 260px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+/* Section */
+.section {
+    margin-bottom: 12px;
+}
+
+h4 {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #9cdcfe;
+}
+
+/* Buttons */
+button {
+    background: #007acc;
+    border: none;
+    padding: 6px 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+button.copied {
+    background: #28a745;
+}
+
+/* Hide UI */
+.hidden .panel {
+    display: none;
+}
+</style>
+
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg"></div>
+
+<!-- Panel -->
+<div class="panel" id="panel">
+
+    <h4 class="section">4. WEB APPLICATION USING LIST CONTROLS</h4>
+
+    <!-- ASPX -->
+    <div class="section">
+        <h4>📄 Default.aspx</h4>
+        <button onclick="copyFromTextarea('code1', this)">Copy</button>
+    </div>
+
+    <!-- C# -->
+    <div class="section">
+        <h4>📄 Default.aspx.cs</h4>
+        <button onclick="copyFromTextarea('code2', this)">Copy</button>
+    </div>
+
+    <!-- Hide -->
+    <div class="section">
+        <button onclick="toggleUI()">👁 Hide</button>
+    </div>
+
+</div>
+
+<!-- ✅ ASPX CODE -->
+<textarea id="code1" style="display:none;">
+<!-- 4. WEB APPLICATION USING LIST CONTROLS -->
+<%@ Page Language="C#" AutoEventWireup="true"
+    CodeBehind="Default.aspx.cs"
+    Inherits="ListControlsDemo.Default" %>
+   <!DOCTYPE html>
+   <html>
+   <head runat="server">
+   <title>List Controls Lab</title>
+   </head>
+   <body>
+   <form id="form1" runat="server">
+   <h2>ASP.NET List Controls</h2>
+   <asp:Label ID="Label1" runat="server" Text="Select     Department"></asp:Label><br />
+   <asp:DropDownList ID="ddlDept" runat="server">
+    <asp:ListItem Text="IT" />
+     <asp:ListItem Text="CSE" />
+      <asp:ListItem Text="ECE" />
+       <asp:ListItem Text="EEE" />
+       </asp:DropDownList>
+     <br /><br />
+    <asp:Label ID="Label2" runat="server" Text="Select Gender"></asp:Label><br />
+   <asp:RadioButtonList ID="rblGender" runat="server">
+    <asp:ListItem Text="Male" />
+     <asp:ListItem Text="Female" />
+     </asp:RadioButtonList>
+      <br />
+     <asp:Label ID="Label3" runat="server" Text="Select Skills"></asp:Label><br />
+       <asp:CheckBoxList ID="cblSkills" runat="server">
+        <asp:ListItem Text="Java" />
+        <asp:ListItem Text="C#" />
+         <asp:ListItem Text="Python" />
+        </asp:CheckBoxList>
+         <br />
+      <asp:Button ID="btnSubmit" runat="server"
+        Text="Submit"
+         OnClick="btnSubmit_Click" />
+      <br /><br />
+      <asp:Label ID="lblResult" runat="server"   ForeColor="Blue"></asp:Label>
+     </form>
+     </body>
+     </html>
+
+</textarea>
+
+<!-- ✅ C# CODE (THIS WAS MISSING ❗) -->
+<textarea id="code2" style="display:none;">
+// 4. WEB APPLICATION USING LIST CONTROLS
+using System;
+         using System.Text;
+        using System.Web.UI.WebControls;
+         namespace ListControlsDemo
+        {
+        public partial class Default : System.Web.UI.Page
+       {
+       protected void Page_Load(object sender, EventArgs e)
+    {
+    }
+    protected void btnSubmit_Click(object sender, EventArgs e)
+   {
+   StringBuilder result = new StringBuilder();
+   result.Append("Department: " + ddlDept.SelectedItem.Text + "<br/>");
+   result.Append("Gender: " + rblGender.SelectedItem.Text + "<br/>");
+   result.Append("Skills: ");
+   foreach (ListItem item in cblSkills.Items)
+   {
+   if (item.Selected)
+   {
+   result.Append(item.Text + " ");
+   }
+   }
+  lblResult.Text = result.ToString();
+  }
+  }
+  }
+
+
+</textarea>
+
+<script>
+
+// Copy function
+function copyFromTextarea(id, btn) {
+    const text = document.getElementById(id).value;
+
+    navigator.clipboard.writeText(text);
+
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+
+    setTimeout(() => {
+        btn.textContent = "Copy";
+        btn.classList.remove("copied");
+    }, 1200);
+}
+
+// Hide UI
+function toggleUI() {
+    document.body.classList.toggle("hidden");
+}
+
+</script>
+
+</body>
+</html>

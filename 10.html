@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VS Code Overlay</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Consolas, monospace;
+}
+
+/* ✅ Background Image */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url("vscode.png") no-repeat center center/cover;
+    z-index: -1;
+}
+
+/* Floating Panel */
+.panel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: rgba(45, 45, 45, 0.95);
+    padding: 12px;
+    border-radius: 10px;
+    width: 260px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+/* Section */
+.section {
+    margin-bottom: 12px;
+}
+
+h4 {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #9cdcfe;
+}
+
+/* Buttons */
+button {
+    background: #007acc;
+    border: none;
+    padding: 6px 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+button.copied {
+    background: #28a745;
+}
+
+/* Hide UI */
+.hidden .panel {
+    display: none;
+}
+</style>
+
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg"></div>
+
+<!-- Panel -->
+<div class="panel" id="panel">
+
+    <h4 class="section">10.DATABASE APPLICATION USING DATA CONTROLS </h4>
+
+    <!-- ASPX -->
+    <div class="section">
+        <h4>📄 Default.aspx</h4>
+        <button onclick="copyFromTextarea('code1', this)">Copy</button>
+    </div>
+
+    <!-- C# -->
+    <div class="section">
+        <h4>📄 Default.aspx.cs</h4>
+        <button onclick="copyFromTextarea('code2', this)">Copy</button>
+    </div>
+
+    <!-- Hide -->
+    <div class="section">
+        <button onclick="toggleUI()">👁 Hide</button>
+    </div>
+
+</div>
+
+<!-- ✅ ASPX CODE -->
+<textarea id="code1" style="display:none;">
+<!-- 9.DATABASE APPLICATION TO PERFORM INSERT, UPDATE AND DELETE OPERATION -->
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebApplication1.Default" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Student Details</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <h2>Student Details</h2>
+
+        <asp:GridView ID="GridView1" runat="server"
+            AutoGenerateColumns="False"
+            AllowPaging="True"
+            AllowSorting="True"
+            PageSize="3"
+            AutoGenerateEditButton="True"
+            DataKeyNames="Id"
+            OnPageIndexChanging="GridView1_PageIndexChanging"
+            OnRowEditing="GridView1_RowEditing"
+            OnRowUpdating="GridView1_RowUpdating"
+            OnRowCancelingEdit="GridView1_RowCancelingEdit">
+
+            <Columns>
+                <asp:BoundField DataField="Id" HeaderText="ID" ReadOnly="True" SortExpression="Id" />
+                <asp:BoundField DataField="Name" HeaderText="Name" SortExpression="Name" />
+                <asp:BoundField DataField="Department" HeaderText="Department" SortExpression="Department" />
+                <asp:BoundField DataField="Marks" HeaderText="Marks" SortExpression="Marks" />
+            </Columns>
+
+        </asp:GridView>
+
+    </form>
+</body>
+</html>
+
+
+</textarea>
+
+<!-- ✅ C# CODE (THIS WAS MISSING ❗) -->
+<textarea id="code2" style="display:none;">
+// 9.DATABASE APPLICATION TO PERFORM INSERT, UPDATE AND DELETE OPERATION
+using System;
+using System.Data;
+
+namespace WebApplication1
+{
+    public partial class Default : System.Web.UI.Page
+    {
+        DataTable dt;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                CreateTable();
+                BindGrid();
+            }
+        }
+
+        void CreateTable()
+        {
+            dt = new DataTable();
+            dt.Columns.Add("Id");
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Department");
+            dt.Columns.Add("Marks");
+
+            dt.Rows.Add("1", "Ravi", "CSE", "85");
+            dt.Rows.Add("2", "Anu", "ECE", "78");
+            dt.Rows.Add("3", "Kumar", "IT", "90");
+            dt.Rows.Add("4", "Priya", "MECH", "88");
+
+            ViewState["StudentData"] = dt;
+        }
+
+        void BindGrid()
+        {
+            GridView1.DataSource = ViewState["StudentData"] as DataTable;
+            GridView1.DataBind();
+        }
+
+        protected void GridView1_PageIndexChanging(object sender, System.Web.UI.WebControls.GridViewPageEventArgs e)
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            BindGrid();
+        }
+
+        protected void GridView1_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
+        {
+            GridView1.EditIndex = e.NewEditIndex;
+            BindGrid();
+        }
+
+        protected void GridView1_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
+        {
+            GridView1.EditIndex = -1;
+            BindGrid();
+        }
+
+        protected void GridView1_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
+        {
+            dt = ViewState["StudentData"] as DataTable;
+
+            string name = ((System.Web.UI.WebControls.TextBox)GridView1.Rows[e.RowIndex].Cells[1].Controls[0]).Text;
+            string dept = ((System.Web.UI.WebControls.TextBox)GridView1.Rows[e.RowIndex].Cells[2].Controls[0]).Text;
+            string marks = ((System.Web.UI.WebControls.TextBox)GridView1.Rows[e.RowIndex].Cells[3].Controls[0]).Text;
+
+            dt.Rows[e.RowIndex]["Name"] = name;
+            dt.Rows[e.RowIndex]["Department"] = dept;
+            dt.Rows[e.RowIndex]["Marks"] = marks;
+
+            ViewState["StudentData"] = dt;
+
+            GridView1.EditIndex = -1;
+            BindGrid();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+</textarea>
+
+<script>
+
+// Copy function
+function copyFromTextarea(id, btn) {
+    const text = document.getElementById(id).value;
+
+    navigator.clipboard.writeText(text);
+
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+
+    setTimeout(() => {
+        btn.textContent = "Copy";
+        btn.classList.remove("copied");
+    }, 1200);
+}
+
+// Hide UI
+function toggleUI() {
+    document.body.classList.toggle("hidden");
+}
+
+</script>
+
+</body>
+</html>

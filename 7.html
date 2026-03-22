@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VS Code Overlay</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Consolas, monospace;
+}
+
+/* ✅ Background Image */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url("vscode.png") no-repeat center center/cover;
+    z-index: -1;
+}
+
+/* Floating Panel */
+.panel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: rgba(45, 45, 45, 0.95);
+    padding: 12px;
+    border-radius: 10px;
+    width: 260px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+/* Section */
+.section {
+    margin-bottom: 12px;
+}
+
+h4 {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #9cdcfe;
+}
+
+/* Buttons */
+button {
+    background: #007acc;
+    border: none;
+    padding: 6px 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+button.copied {
+    background: #28a745;
+}
+
+/* Hide UI */
+.hidden .panel {
+    display: none;
+}
+</style>
+
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg"></div>
+
+<!-- Panel -->
+<div class="panel" id="panel">
+
+    <h4 class="section">7.DATA BINDING WITH WEB CONTROLS</h4>
+
+    <!-- ASPX -->
+    <div class="section">
+        <h4>📄 Default.aspx</h4>
+        <button onclick="copyFromTextarea('code1', this)">Copy</button>
+    </div>
+
+    <!-- C# -->
+    <div class="section">
+        <h4>📄 Default.aspx.cs</h4>
+        <button onclick="copyFromTextarea('code2', this)">Copy</button>
+    </div>
+
+    <!-- Hide -->
+    <div class="section">
+        <button onclick="toggleUI()">👁 Hide</button>
+    </div>
+
+</div>
+
+<!-- ✅ ASPX CODE -->
+<textarea id="code1" style="display:none;">
+<!-- 7.DATA BINDING WITH WEB CONTROLS -->
+<%@ Page Language="C#" AutoEventWireup="true" 
+ CodeBehind="Default.aspx.cs" Inherits="SimpleBind.Default" %> 
+<!DOCTYPE html> 
+<html> 
+<body> 
+<form runat="server"> 
+    <asp:GridView ID="GridView1" runat="server"></asp:GridView> 
+</form> 
+</body> 
+</html> 
+
+
+</textarea>
+
+<!-- ✅ C# CODE (THIS WAS MISSING ❗) -->
+<textarea id="code2" style="display:none;">
+// 7.DATA BINDING WITH WEB CONTROLS
+using System; using System.Data; 
+namespace SimpleBind 
+{ public partial class Default : System.Web.UI.Page 
+{ protected void Page_Load(object sender, EventArgs e) 
+{ 
+DataTable dt = new DataTable(); dt.Columns.Add("Car Names"); dt.Columns.Add("Price"); 
+dt.Rows.Add("Swift", "500000"); dt.Rows.Add("Triber", "900000"); dt.Rows.Add("BMW", "1900000"); dt.Rows.Add("Audi", "1500000"); 
+GridView1.DataSource = dt; 
+GridView1.DataBind(); 
+} 
+} 
+} 
+
+
+
+
+
+
+
+</textarea>
+
+<script>
+
+// Copy function
+function copyFromTextarea(id, btn) {
+    const text = document.getElementById(id).value;
+
+    navigator.clipboard.writeText(text);
+
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+
+    setTimeout(() => {
+        btn.textContent = "Copy";
+        btn.classList.remove("copied");
+    }, 1200);
+}
+
+// Hide UI
+function toggleUI() {
+    document.body.classList.toggle("hidden");
+}
+
+</script>
+
+</body>
+</html>
