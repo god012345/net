@@ -23,16 +23,16 @@ text-align: center;
 .row {
 margin-bottom: 10px;
 }
-. row label {
+.row label {   /* fixed */
 display: block;
 font-weight: bold;
 }
 .row input {
 width: 95%;
 }
-. center {
+.center {   /* fixed */
 text-align: center;
-}    /* Success label small size */
+}
 .msg {
 display: inline-block;
 padding: 3px 6px;
@@ -51,23 +51,23 @@ margin-top: 5px;
 <div class="row">
 <label>Name</label>
 <asp:TextBox ID="txtName" runat="server" />
-<asp:RequiredFieldValidator runat="server  ControlToValidate="txtName ErrorMessage="Required"
+<asp:RequiredFieldValidator runat="server" ControlToValidate="txtName" ErrorMessage="Required"
 ForeColor="Red" />
 </div>
 
 <div class="row">
 <label>Email</label>
 <asp:TextBox ID="txtEmail" runat="server" />
-<asp:RequiredFieldValidator runat="server" ControlToValidate="txtEmail"ErrorMessage="Required"
-Forecolour="Red" />
-<asp:RegularExpressionValidator runat="server"ControlToValidate="txtEmail"
-ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"ErrorMessage="Invalid"ForeColor="Red" />
+<asp:RequiredFieldValidator runat="server" ControlToValidate="txtEmail" ErrorMessage="Required"
+ForeColor="Red" />
+<asp:RegularExpressionValidator runat="server" ControlToValidate="txtEmail"
+ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$" ErrorMessage="Invalid" ForeColor="Red" />
 </div>
 
 <div class="row">
 <label>Age</label>
 <asp:TextBox ID="txtAge" runat="server" />
-<asp:RangeValidator runat="server" ControlToValidate="txtAge"MinimumValue="18"MaximumValue="60"
+<asp:RangeValidator runat="server" ControlToValidate="txtAge" MinimumValue="18" MaximumValue="60"
 Type="Integer" ErrorMessage="18–60 only" ForeColor="Red" />
 </div>
 
@@ -75,23 +75,26 @@ Type="Integer" ErrorMessage="18–60 only" ForeColor="Red" />
 <label>Password</label>
 <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" />
 <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPassword" ErrorMessage="Required"
-ForeColor="Red" />   </div>
+ForeColor="Red" />
+</div>
+
 <div class="row">
 <label>Confirm Password</label>
 <asp:TextBox ID="txtConfirm" runat="server" TextMode="Password" />
-<asp:CompareValidator runat="server"ControlToValidate="txtConfirm"ControlToCompare="txtPassword"
+<asp:CompareValidator runat="server" ControlToValidate="txtConfirm" ControlToCompare="txtPassword"
 ErrorMessage="Mismatch" ForeColor="Red" />
 </div>
 
 <div class="center">
-<asp:Button runat="server"  Text="Submit" OnClick="SubmitClick" />
+<asp:Button runat="server" Text="Submit" OnClick="Submit_Click" /> <!-- fixed -->
 <br />
 <asp:Label ID="lblMsg" runat="server" CssClass="msg" ForeColor="Green" />
 </div>
 </div>
 </form>
+
 <script runat="server">
-protected void Submit_Click(object sender, EventArgs e)
+protected void Submit_Click(object sender, EventArgs e)   /* fixed name */
 {
 if (Page.IsValid)
 {
